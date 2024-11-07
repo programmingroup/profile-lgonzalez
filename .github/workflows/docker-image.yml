@@ -1,0 +1,21 @@
+name: Build ad Publish image to Docker Hub
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  publish_images:
+    runs-on: alpine
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: build image
+        run: 
+          docker build . -t programmingroup/my-profile-lgonzalez:latest
+      - name: push image to docker hub
+        run:
+          docker login -u programmingroup -p ${{ secrets.DOCKER_HUB_TOKEN }}
+          docker push programmingroup/my-profile-lgonzalez:latest
